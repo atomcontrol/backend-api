@@ -29,4 +29,10 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
         Route::get('/', 'UsersController@getMe');
         Route::put('/', 'UsersController@updateMe');
     });
+
+    Route::group(array('prefix' => 'recipes'), function() {
+        Route::get('/', 'RecipeController@index');
+        Route::get('/{slug}', 'RecipeController@show');
+        Route::put('/{slug}', 'RecipeController@update');
+    });
 });
