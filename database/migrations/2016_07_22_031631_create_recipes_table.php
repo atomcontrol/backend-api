@@ -19,7 +19,7 @@ class CreateRecipesTable extends Migration
             $table->text('description');
             $table->integer('serves');
             $table->integer('makes_quantity');
-            $table->string('make_noun');
+            $table->string('makes_noun');
             $table->string('time_total');
             $table->string('time_details');
             $table->string('source');
