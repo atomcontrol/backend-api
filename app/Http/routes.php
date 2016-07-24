@@ -34,5 +34,11 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
         Route::get('/', 'RecipeController@index');
         Route::get('/{slug}', 'RecipeController@show');
         Route::put('/{slug}', 'RecipeController@update');
+        Route::post('/{slug}', 'RecipeController@update');
+    });
+
+    Route::group(['prefix' => 'meals'], function() {
+        Route::get('/', 'MealController@index');
+        Route::get('/shoppinglist', 'MealController@shoppingList');
     });
 });

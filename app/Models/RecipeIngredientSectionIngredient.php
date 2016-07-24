@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RecipeIngredientSectionIngredient extends Model
 {
+    protected $hidden = ['created_at', 'updated_at'];
     protected $table = 'recipe_section_ingredients';
     public function ingredient()
     {

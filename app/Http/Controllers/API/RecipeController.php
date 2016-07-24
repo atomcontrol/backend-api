@@ -20,7 +20,7 @@ class RecipeController extends Controller {
     }
     public function update($slug, Request $request) {
         $r = Recipe::where('slug',$slug)->first();
-        $data = $request->all();
+        $data = json_decode($request->get('json'),true);
 
         foreach ($data as $k => $v) {
             if(in_array($k,$r->getFillable())) {

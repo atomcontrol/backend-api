@@ -19,7 +19,7 @@ class Recipe extends Model
         'description',
         'serves',
         'makes_quantity',
-        'make_noun',
+        'makes_noun',
         'time_total',
         'time_details',
         'source'];
@@ -74,5 +74,21 @@ class Recipe extends Model
 
             }
         }
+    }
+    public static function flattenIngredients($deepRecipe) {
+        $result = [];
+        foreach ($deepRecipe['ingredient_sections'] as $sect) {
+            foreach($sect['ingredients'] as $ingr) {
+                $ingr['recipe_name']=$deepRecipe['name'];
+                $ingr['recipe_id']=$deepRecipe['id'];
+                unset($ingr['ingredient_section_id']);
+                unset($ingr['ingredient_id']);
+                unset($ingr['ingredient_substitute_id']);
+                unset($ingr['extras']);
+                unset($ingr['id']);
+                $result[]=$ingr;
+            }
+        }
+        return $result;
     }
 }
