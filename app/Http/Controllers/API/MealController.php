@@ -18,7 +18,6 @@ class MealController extends Controller {
     }
     public function shoppingList() {
         $meals = Meal::with(
-            'meal_recipe.recipe',
             'meal_recipe.recipe.instruction_sections',
             'meal_recipe.recipe.ingredient_sections.ingredients.ingredient',
             'meal_recipe.recipe.ingredient_sections.ingredients.substitute'
@@ -28,34 +27,56 @@ class MealController extends Controller {
         foreach($meals as $meal) {
             foreach($meal['meal_recipe'] as $mr) {
                 //return $mr['recipe']['name'];
-                $ing = Recipe::flattenIngredients($mr['recipe']);
-                $ing = RecipeIngredient::scaleList($ing,$mr['portion']);
-                foreach($ing as $eachIngredient) {
-                    $shoppingList = RecipeIngredient::addToShoppingList($eachIngredient,$shoppingList);
+                $ingredients = self::flattenIngredients($mr['recipe']);
+                $ingredients = self::scaleList($ingredients,$mr['portion']);
+                foreach($ingredients as $eachIngredient) {
+                    $shoppingList = self::addToShoppingList($eachIngredient,$shoppingList);
                 }
-                //return($ing);
             }
         }
         return Meal::condense($shoppingList);
     }
-//    public function show($slug) {
-//        $r =  Recipe::with(Recipe::ALL_EAGER_CONSTRAINTS)->where('slug',$slug)->first();
-//        return $r;//todo check for null
-//    }
-//    public function update($slug, Request $request) {
-//        $r = Recipe::where('slug',$slug)->first();
-//        $data = json_decode($request->get('json'),true);
-//
-//        foreach ($data as $k => $v) {
-//            if(in_array($k,$r->getFillable())) {
-//                $r->$k=$v;
-//            }
-//        }
-//        $r->populateInstructionSections($data['instruction_sections']);
-//        $r->populateIngredientSections($data['ingredient_sections']);
-//        $r->save();
-//
-//        return $r->fresh(Recipe::ALL_EAGER_CONSTRAINTS);
-//
-//    }
+
+    public static function scaleList($list,$scale) {
+        foreach($list as &$value)
+        {
+            $value['quantity'] = $value['quantity']*$scale;
+            $value['quantity_endrange'] = $value['quantity_endrange']*$scale;
+            $value['grams'] = $value['grams']*$scale;
+        }
+        return $list;
+    }
+
+    public static function addToShoppingList($ingredient,$list) {
+        $ingredientId = $ingredient['ingredient']['id'];
+        $list[$ingredientId]['deps'][]=$ingredient;//add the ingredient to the list dependencies
+        $list[$ingredientId]['name']=$ingredient['ingredient']['name'];
+
+        //clear out unneeded things
+        unset($ingredient['recipe_id']);
+        unset($ingredient['recipe_name']);
+        unset($ingredient['substitute']);
+        unset($ingredient['ingredient']);
+
+        $list[$ingredientId]['items'][]=$ingredient;
+        return $list;
+    }
+    public static function flattenIngredients($deepRecipe) {
+        $result = [];
+        foreach ($deepRecipe['ingredient_sections'] as $sect) {
+            foreach($sect['ingredients'] as $ingr) {
+                //pointers back to the recipe
+                $ingr['recipe_name']=$deepRecipe['name'];
+                $ingr['recipe_id']=$deepRecipe['id'];
+                //get rid of extraneous things
+                unset($ingr['ingredient_section_id']);
+                unset($ingr['ingredient_id']);
+                unset($ingr['ingredient_substitute_id']);
+                unset($ingr['extras']);
+                unset($ingr['id']);
+                $result[]=$ingr;
+            }
+        }
+        return $result;
+    }
 }
