@@ -22,7 +22,8 @@
         "symfony/psr-http-message-bridge": "0.2",
         "twilio/sdk": "^4.10",
         "eluceo/ical": "^0.9.0",
-        "php-units-of-measure/php-units-of-measure": "dev-develop"
+        "php-units-of-measure/php-units-of-measure": "dev-develop",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -41,6 +41,12 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
         Route::get('/', 'MealController@index');
         Route::get('/shoppinglist', 'MealController@shoppingList');
     });
+
+    Route::group(['prefix' => 'lights'], function() {
+        Route::get('/', 'LightingController@index');
+        Route::get('/test', 'LightingController@test');
+    });
+
     Route::group(['prefix' => 'data/collect'], function() {
         Route::put('speedtest', 'DataCollector@receiveSpeedTestData');
         Route::put('networkscan', 'DataCollector@receiveNetworkScan');
