@@ -161,6 +161,7 @@ return [
         'Spatie\Tail\TailServiceProvider',
 
         Aws\Laravel\AwsServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
