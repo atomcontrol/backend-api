@@ -16,7 +16,7 @@ class CreateMealRecipesTable extends Migration
             $table->increments('id');
 
             $table->integer('recipe_id')->unsigned();
-            $table->foreign('recipe_id')->references('id')->on('recipe_ingredients');
+            $table->foreign('recipe_id')->references('id')->on('recipes');
 
             $table->integer('meal_id')->unsigned();
             $table->foreign('meal_id')->references('id')->on('meals');
