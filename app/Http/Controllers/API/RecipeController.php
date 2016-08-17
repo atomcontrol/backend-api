@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Recipe;
+use App\Models\RecipeIngredient;
 use Auth;
 use Illuminate\Http\Request;
 use Input;
@@ -33,5 +34,8 @@ class RecipeController extends Controller {
 
         return $r->fresh(Recipe::ALL_EAGER_CONSTRAINTS);
         
+    }
+    public function ingredientsIndex() {
+        return RecipeIngredient::with('usage.parentSection.recipe')->orderBy('name')->get();
     }
 }

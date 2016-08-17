@@ -12,4 +12,7 @@ class RecipeIngredientSection extends Model
     {
         return $this->hasMany('App\Models\RecipeIngredientSectionIngredient','ingredient_section_id');
     }
+    public function recipe() {
+        return $this->hasOne('App\Models\Recipe','id','recipe_id');
+    }
 }

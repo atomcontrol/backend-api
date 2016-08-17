@@ -24,7 +24,8 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
     Route::post('auth', 'AuthController@login');
     Route::post('users', 'AuthController@signUp');
     Route::get('debug', 'AuthController@debug');
-    
+    Route::get('test', 'GeneralController@test');
+
     Route::group(array('prefix' => 'users/me'), function() {
         Route::get('/', 'UsersController@getMe');
         Route::put('/', 'UsersController@updateMe');
@@ -32,6 +33,7 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
 
     Route::group(array('prefix' => 'recipes'), function() {
         Route::get('/', 'RecipeController@index');
+        Route::get('ingredients', 'RecipeController@ingredientsIndex');
         Route::get('/{slug}', 'RecipeController@show');
         Route::put('/{slug}', 'RecipeController@update');
         Route::post('/{slug}', 'RecipeController@update');

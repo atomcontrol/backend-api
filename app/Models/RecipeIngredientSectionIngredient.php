@@ -16,4 +16,7 @@ class RecipeIngredientSectionIngredient extends Model
     {
         return $this->hasOne('App\Models\RecipeIngredient','id','ingredient_substitute_id');
     }
+    public function parentSection() {
+        return $this->hasOne('App\Models\RecipeIngredientSection','id','ingredient_section_id');
+    }
 }
