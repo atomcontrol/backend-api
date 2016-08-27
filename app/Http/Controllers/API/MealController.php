@@ -13,8 +13,15 @@ class MealController extends Controller {
 
 
     public function index() {
-        $r = Meal::with('meal_recipe.recipe')->get();
-        return $r;
+        $m = Meal::with('meal_recipe.recipe')->get();
+        foreach ($m as &$each) {
+            foreach($each['meal_recipe'] as &$r) {
+                $r['p']="asd";
+                $r['cost']=$r['recipe']->getCost($r['portion']);
+
+            }
+        }
+        return $m;
     }
     public function shoppingList() {
         $meals = Meal::with(

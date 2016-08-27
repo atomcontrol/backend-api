@@ -75,4 +75,16 @@ class Recipe extends Model
             }
         }
     }
+
+    public function getCost($scale) {
+        $r = Recipe::with('ingredient_sections')->find($this->id);
+        $a=['section_costs'=>null,'total'=>0];
+        foreach ($r->ingredient_sections as $section){
+            $sectionCost = $section->calculateSectionCost($scale);
+            $a['section_costs'][]=$sectionCost;
+            $a['total']+=$sectionCost['total'];
+        }
+        return $a;
+
+    }
 }

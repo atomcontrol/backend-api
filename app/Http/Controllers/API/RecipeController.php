@@ -17,6 +17,7 @@ class RecipeController extends Controller {
     }
     public function show($slug) {
         $r =  Recipe::with(Recipe::ALL_EAGER_CONSTRAINTS)->where('slug',$slug)->first();
+        $r['cost']=$r->getCost(1);
         return $r;//todo check for null
     }
     public function update($slug, Request $request) {

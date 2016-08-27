@@ -15,4 +15,25 @@ class RecipeIngredientSection extends Model
     public function recipe() {
         return $this->hasOne('App\Models\Recipe','id','recipe_id');
     }
+    public function calculateSectionCost($scale) {
+        $totalPrice = 0;
+        $result = [];
+        foreach( $this->ingredients as $eachIngredient ) {
+            $price = $eachIngredient->ingredient->getPriceForQuantity($eachIngredient['quantity'], $eachIngredient['quantity_unit']);
+            $totalPrice+=$price;
+            $result['items'][]=[
+                'price'=>$price,
+                'quantity_unit'=>$eachIngredient['quantity_unit'],
+                'name'=>$eachIngredient['ingredient']['name'],
+                'id'=>$eachIngredient['ingredient']['id']
+            ];
+            if(false) {
+                echo $eachIngredient['ingredient']['name'];
+                echo($price);
+                echo "<hr/>";
+            }
+        }
+        $result['total'] = $totalPrice*$scale;
+        return $result;
+    }
 }
