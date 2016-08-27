@@ -14,7 +14,6 @@ class CreateNetworkScansTable extends Migration
     {
         Schema::create('network_scans', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hostname');
             $table->string('mac');
             $table->integer('group');
             $table->timestamps();

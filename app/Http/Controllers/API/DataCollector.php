@@ -32,7 +32,6 @@ class DataCollector extends Controller {
 
         foreach($request->toArray() as $eachScan) {
             $a = new NetworkScan();
-            $a->hostname = $eachScan['hostname'];
             $a->mac = $eachScan['mac'];
             $a->group = $groupum;
             $a->save();
