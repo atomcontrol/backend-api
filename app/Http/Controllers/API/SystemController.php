@@ -2,6 +2,8 @@
 use App\Http\Controllers\Controller;
 use App\Models\NetworkScan;
 use App\Models\NetworkDevice;
+use App\Models\SpeedtestResult;
+use Carbon\Carbon;
 class SystemController extends Controller {
     public function networkDevices() {
         $data = [
@@ -16,5 +18,30 @@ class SystemController extends Controller {
                 $data['devices'][$device->nickname]['latest'] = (string) $q->first()->created_at->diffForHumans();
         }
         return($data);
+    }
+    public function networkSpeed() {
+
+        $lastScan = SpeedtestResult::orderBy('created_at','DESC')->first();
+        $lastScan['when'] = $lastScan->created_at->diffForHumans();
+
+
+        $thisWeek = SpeedtestResult::where('created_at', '>', Carbon::now()->subDays(7))->get();
+        $runningTotalUpload = [];
+        $runningTotalDownload = [];
+        $runningTotalPing = [];
+        foreach ($thisWeek as $eachScan) {
+            $runningTotalDownload[]=$eachScan->download;
+            $runningTotalUpload[]=$eachScan->upload;
+            $runningTotalPing[]=$eachScan->ping;
+        }
+        $stats = [
+            'upload' => ['min' => min($runningTotalUpload),'max' => max($runningTotalUpload)],
+            'download' => ['min' => min($runningTotalDownload),'max' => max($runningTotalDownload)],
+            'ping' => ['min' => min($runningTotalPing),'max' => max($runningTotalPing)]
+        ];
+        return [
+            'stats'=>$stats,
+            'latest'=>$lastScan
+        ];
     }
 }

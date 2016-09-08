@@ -52,6 +52,7 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
 
     Route::group(['prefix' => 'system'], function() {
         Route::get('network/devices', 'SystemController@networkDevices');
+        Route::get('network/speed', 'SystemController@networkSpeed');
     });
 
     Route::group(['prefix' => 'data/collect'], function() {
