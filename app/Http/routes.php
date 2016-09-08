@@ -50,6 +50,10 @@ Route::group(['prefix' => 'v1','namespace'=>'API'], function()
         Route::get('/test', 'LightingController@test');
     });
 
+    Route::group(['prefix' => 'system'], function() {
+        Route::get('network/devices', 'SystemController@networkDevices');
+    });
+
     Route::group(['prefix' => 'data/collect'], function() {
         Route::put('speedtest', 'DataCollector@receiveSpeedTestData');
         Route::put('networkscan', 'DataCollector@receiveNetworkScan');
