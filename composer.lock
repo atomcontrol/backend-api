@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3da6c9b5330f25246b491fc8c2068c28",
-    "content-hash": "327694d215368b2f46de9f020c243aa3",
+    "hash": "e1feae19d6eb81fdec22e96a426c514f",
+    "content-hash": "7926dc4aeba4ef39d1d4512049bae7c3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1129,6 +1129,70 @@
                 "uri"
             ],
             "time": "2016-06-24 23:00:38"
+        },
+        {
+            "name": "influxdb/influxdb-php",
+            "version": "1.14.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/influxdata/influxdb-php.git",
+                "reference": "4973948c6daa5996822c26100dc6379d8a8346ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/influxdata/influxdb-php/zipball/4973948c6daa5996822c26100dc6379d8a8346ec",
+                "reference": "4973948c6daa5996822c26100dc6379d8a8346ec",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "6.*",
+                "php": "^5.5 | ^7.0",
+                "symfony/event-dispatcher": "2.*|3.*"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "0.*",
+                "phpunit/phpunit": "^4.0",
+                "symfony/config": "~2.8",
+                "symfony/console": "~2.8",
+                "symfony/filesystem": "~2.8",
+                "symfony/stopwatch": "~2.8",
+                "symfony/yaml": "~2.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "InfluxDB\\": "src/InfluxDB"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gianluca Arbezzano",
+                    "email": "gianarb92@gmail.com"
+                },
+                {
+                    "name": "Daniel Martinez",
+                    "email": "danimartcas@hotmail.com"
+                },
+                {
+                    "name": "Stephen Hoogendijk",
+                    "email": "stephen@tca0.nl"
+                }
+            ],
+            "description": "InfluxDB client library for PHP",
+            "keywords": [
+                "client",
+                "influxdata",
+                "influxdb",
+                "influxdb class",
+                "influxdb client",
+                "influxdb library",
+                "time series"
+            ],
+            "time": "2016-10-08 14:56:15"
         },
         {
             "name": "ircmaxell/password-compat",

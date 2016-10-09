@@ -25,7 +25,8 @@
         "php-units-of-measure/php-units-of-measure": "dev-develop",
         "predis/predis": "^1.1",
         "barryvdh/laravel-ide-helper": "^2.2",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "influxdb/influxdb-php": "^1.14"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

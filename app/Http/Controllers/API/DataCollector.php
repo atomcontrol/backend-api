@@ -7,7 +7,9 @@ use App\Models\SpeedtestResult;
 use Illuminate\Http\Request;
 use Input;
 use Log;
-
+use InfluxDB;
+use InfluxDB\Point;
+use InfluxDB\Database;
 class DataCollector extends Controller {
 
     public function receiveSpeedTestData(Request $request) {
@@ -18,6 +20,32 @@ class DataCollector extends Controller {
         $obj->ping = $request->ping;
         $obj->hostname = $request->hostname;
         $obj->save();
+
+
+        $host = 'localhost';
+        $port =  8086;
+        $client = new InfluxDB\Client($host, $port);
+        $database = $client->selectDB('test');
+        $points = array(
+            new Point(
+                'upload_speed', // name of the measurement
+                $obj->upload, // the measurement value
+                ['host' => $request->hostname]// optional tags
+            ),
+            new Point(
+                'download_speed', // name of the measurement
+                $obj->download, // the measurement value
+                ['host' => $request->hostname]// optional tags
+            ),
+            new Point(
+                'ping', // name of the measurement
+                $obj->ping, // the measurement value
+                ['host' => $request->hostname]// optional tags
+            )
+        );
+        $result = $database->writePoints($points, Database::PRECISION_SECONDS);
+
+
         return 'ok';
     }
     public function receiveDashButtonClick(Request $request) {
