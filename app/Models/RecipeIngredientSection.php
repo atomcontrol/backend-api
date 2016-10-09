@@ -16,6 +16,7 @@ class RecipeIngredientSection extends Model
         return $this->hasOne('App\Models\Recipe','id','recipe_id');
     }
     public function calculateSectionCost($scale) {
+        return 1;
         $totalPrice = 0;
         $result = [];
         foreach( $this->ingredients as $eachIngredient ) {

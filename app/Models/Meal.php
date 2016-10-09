@@ -3,6 +3,7 @@
 namespace App\Models;
 use Log;
 use Illuminate\Database\Eloquent\Model;
+use PhpUnitsOfMeasure\PhysicalQuantity\Mass;
 use PhpUnitsOfMeasure\PhysicalQuantity\Volume;
 
 class Meal extends Model
@@ -14,8 +15,14 @@ class Meal extends Model
             //$a['quantity']=69;
             $unit = $a['quantity_unit'];
             if($unit!="") {
-                $a['quantity'] = (new Volume($a['quantity'], $unit))->toUnit('cup');
-                $a['quantity_endrange'] = (new Volume($a['quantity_endrange'], $unit))->toUnit('cup');
+                if($unit == 'pound') {
+                    $a['quantity'] = (new Mass($a['quantity'], $unit))->toUnit('pound');
+                    $a['quantity_endrange'] = (new Mass($a['quantity_endrange'], $unit))->toUnit('pound');
+                }
+                else {
+                    $a['quantity'] = (new Volume($a['quantity'], $unit))->toUnit('cup');
+                    $a['quantity_endrange'] = (new Volume($a['quantity_endrange'], $unit))->toUnit('cup');
+                }
                 $a['quantity_unit'] = 'cup';
             }
             return $a;

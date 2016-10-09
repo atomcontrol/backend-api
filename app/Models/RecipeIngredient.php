@@ -3,6 +3,7 @@
 namespace App\Models;
 use Log;
 use Illuminate\Database\Eloquent\Model;
+use PhpUnitsOfMeasure\PhysicalQuantity\Mass;
 use PhpUnitsOfMeasure\PhysicalQuantity\Volume;
 
 class RecipeIngredient extends Model
@@ -15,12 +16,12 @@ class RecipeIngredient extends Model
         return $this->hasMany('App\Models\RecipeIngredientSectionIngredient','ingredient_id');
     }
     public function getPriceForQuantity($quantity, $quantity_unit) {
+        Log::info($quantity."-".$quantity_unit."-".$this->id);
+
+        $quantity_unit = trim($quantity_unit);
         if($this->price_unit == $quantity_unit) {
             if($this->price == 0)
                 return 44.4;
-
-
-
             return $this->price * $quantity;
         }
 
@@ -28,10 +29,15 @@ class RecipeIngredient extends Model
             return 33.3;
 
 
-        $test = new Volume($quantity,$quantity_unit);
-        return $test->toUnit($this->price_unit)*$this->price;
+        if($quantity_unit=="pound" || $quantity_unit=="gram")
+            $v = new Mass($quantity,$quantity_unit);
+        else
+            $v = new Volume($quantity,$quantity_unit);
+        //return 'ok';
+        return $v->toUnit($this->price_unit)*$this->price;
+
+
         Log::info($this->name." - ".$this->price_unit." vs ".$quantity_unit);
-        return 22.2;
     }
 }
 
