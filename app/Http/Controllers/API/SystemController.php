@@ -22,6 +22,8 @@ class SystemController extends Controller {
     public function networkSpeed() {
 
         $lastScan = SpeedtestResult::orderBy('created_at','DESC')->first();
+        if(!$lastScan)
+            return [];
         $lastScan['when'] = $lastScan->created_at->diffForHumans();
 
 

@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\NetworkDevice;
 use App\Models\NetworkScan;
 use App\Models\SpeedtestResult;
 use Illuminate\Http\Request;
@@ -35,6 +36,15 @@ class DataCollector extends Controller {
             $a->mac = $eachScan['mac'];
             $a->group = $groupum;
             $a->save();
+
+            $device = NetworkDevice::firstOrNew(['mac'=>$a->mac]);
+            if(!$device->exists)
+            {
+                $device->nickname = "unnamed ".$a->mac;
+                $device->save();
+            }
+
+
         }
         return 'ok';
     }
