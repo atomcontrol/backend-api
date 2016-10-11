@@ -4,8 +4,16 @@ use App\Models\NetworkScan;
 use App\Models\NetworkDevice;
 use App\Models\SpeedtestResult;
 use Carbon\Carbon;
+use Cache;
 class SystemController extends Controller {
     public function networkDevices() {
+
+        if (Cache::has('network-devices-list')) {
+            return Cache::get('network-devices-list');
+        }
+        return self::cacheNetworkDevices();
+    }
+    public static function cacheNetworkDevices() {
         $data = [
             'total_scans' => NetworkScan::count(),
             'latest_scan' => (string) NetworkScan::orderBy('created_at','DESC')->first()->created_at
@@ -17,7 +25,9 @@ class SystemController extends Controller {
             if($q->first())
                 $data['devices'][$device->nickname]['latest'] = (string) $q->first()->created_at->diffForHumans();
         }
-        return($data);
+        Cache::put('network-devices-list', $data, 120);
+        return $data;
+
     }
     public function networkSpeed() {
 
