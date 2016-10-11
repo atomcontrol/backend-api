@@ -21,10 +21,7 @@ class DataCollector extends Controller {
         $obj->hostname = $request->hostname;
         $obj->save();
 
-
-        $host = 'localhost';
-        $port =  8086;
-        $client = new InfluxDB\Client($host, $port);
+        $client = new InfluxDB\Client(env('INFLUXDB_HOST'), env('INFLUXDB_PORT'));
         $database = $client->selectDB('test');
         $points = array(
             new Point(
@@ -53,13 +50,15 @@ class DataCollector extends Controller {
     }
     public function receiveNetworkScan(Request $request) {
 
+        Log::info($request);
         $lastGroupNum = 0;
         $last = NetworkScan::orderBy('created_at', 'desc')->first();
         if($last)
             $lastGroupNum = $last->group;
         $groupum = $lastGroupNum+1;
 
-        foreach($request->toArray() as $eachScan) {
+        $data = $request->toArray();
+        foreach($data as $eachScan) {
             $a = new NetworkScan();
             $a->mac = $eachScan['mac'];
             $a->group = $groupum;
@@ -72,8 +71,22 @@ class DataCollector extends Controller {
                 $device->save();
             }
 
-
         }
+
+        $numDevices = sizeof($data)+1;//add 'myself'
+
+       // return 'ok';
+        $client = new InfluxDB\Client(env('INFLUXDB_HOST'), env('INFLUXDB_PORT'));
+        $database = $client->selectDB('test');
+        $points = array(
+            new Point(
+                'network_devices', // name of the measurement
+                $numDevices, // the measurement value
+                ['host' => 'ns.local']// optional tags
+            )
+        );
+        $result = $database->writePoints($points, Database::PRECISION_SECONDS);
+
         return 'ok';
     }
 
